@@ -290,7 +290,7 @@ label { display: block; font-size: 13px; font-weight: 600; color: var(--gray-700
 .report-card .value { font-size: 20px; font-weight: bold; color: var(--primary-dark); display: block; }
 .report-card .label { font-size: 11px; color: var(--gray-500); }
 
-/* ==================== لیست محصولات (مدیریت) ==================== */
+/* ==================== لیست محصولات ==================== */
 .products-list { display: flex; flex-direction: column; gap: 6px; }
 
 .product-item {
@@ -307,7 +307,7 @@ label { display: block; font-size: 13px; font-weight: 600; color: var(--gray-700
 .product-item .status.available { background: #e8f5e9; color: #2e7d32; }
 .product-item .status.unavailable { background: #ffebee; color: #c62828; }
 
-/* ==================== پیش‌نمایش فاکتور ==================== */
+/* ==================== فاکتور ==================== */
 .receipt-actions {
     display: flex; gap: 8px; margin-bottom: 16px;
     position: sticky; top: 0; background: #faf7f4; padding: 10px 0; z-index: 10;
@@ -327,124 +327,46 @@ label { display: block; font-size: 13px; font-weight: 600; color: var(--gray-700
     color: #333;
 }
 
-.receipt-paper .receipt-header {
-    text-align: center;
-    margin-bottom: 10px;
-}
-
-.receipt-paper .receipt-header h3 {
-    font-size: 16px;
-    color: #3c2415;
-    margin-bottom: 4px;
-}
-
-.receipt-paper .receipt-header small {
-    font-size: 10px;
-    color: #777;
-    display: block;
-}
+.receipt-paper .receipt-header { text-align: center; margin-bottom: 10px; }
+.receipt-paper .receipt-header h3 { font-size: 16px; color: #3c2415; margin-bottom: 4px; }
+.receipt-paper .receipt-header small { font-size: 10px; color: #777; display: block; }
 
 .receipt-paper .receipt-divider {
-    text-align: center;
-    color: #ccc;
-    margin: 8px 0;
-    font-size: 12px;
-    letter-spacing: 1px;
+    text-align: center; color: #ccc; margin: 8px 0; font-size: 12px; letter-spacing: 1px;
 }
 
-.receipt-paper .receipt-row {
-    display: flex;
-    justify-content: space-between;
-    margin: 2px 0;
-    font-size: 12px;
-}
-
+.receipt-paper .receipt-row { display: flex; justify-content: space-between; margin: 2px 0; font-size: 12px; }
 .receipt-paper .receipt-row.title {
-    font-weight: bold;
-    border-bottom: 1px dashed #ccc;
-    padding-bottom: 4px;
-    margin-bottom: 4px;
+    font-weight: bold; border-bottom: 1px dashed #ccc;
+    padding-bottom: 4px; margin-bottom: 4px;
 }
-
 .receipt-paper .receipt-row.total {
-    font-weight: bold;
-    font-size: 15px;
-    border-top: 2px solid #333;
-    padding-top: 6px;
-    margin-top: 4px;
+    font-weight: bold; font-size: 15px;
+    border-top: 2px solid #333; padding-top: 6px; margin-top: 4px;
 }
 
 .receipt-paper .receipt-footer {
-    text-align: center;
-    margin-top: 12px;
-    font-size: 11px;
-    color: #555;
-    border-top: 1px dashed #ddd;
-    padding-top: 10px;
+    text-align: center; margin-top: 12px; font-size: 11px;
+    color: #555; border-top: 1px dashed #ddd; padding-top: 10px;
 }
-
-.receipt-paper .receipt-footer p {
-    margin: 3px 0;
-}
+.receipt-paper .receipt-footer p { margin: 3px 0; }
 
 /* ==================== چاپ ==================== */
 @media print {
-    @page {
-        size: 80mm auto;
-        margin: 0;
-    }
-    
-    body {
-        background: white;
-        padding: 0;
-        margin: 0;
-    }
-    
-    .no-print,
-    .main-header,
-    .bottom-nav,
-    .toast,
-    #toastContainer {
-        display: none !important;
-    }
-    
-    .page {
-        display: none !important;
-    }
-    
-    #page-receipt {
-        display: block !important;
-        padding: 0;
-        margin: 0;
-    }
-    
-    .receipt-actions {
-        display: none !important;
-    }
-    
+    @page { size: 80mm auto; margin: 0; }
+    body { background: white; padding: 0; margin: 0; }
+    .no-print, .main-header, .bottom-nav, .toast, #toastContainer { display: none !important; }
+    .page { display: none !important; }
+    #page-receipt { display: block !important; padding: 0; margin: 0; }
+    .receipt-actions { display: none !important; }
     .receipt-paper {
-        box-shadow: none;
-        border: none;
-        max-width: 100%;
-        width: 80mm;
-        padding: 5mm;
-        margin: 0 auto;
-        font-size: 10px;
-        background: white;
-        border-radius: 0;
+        box-shadow: none; border: none; max-width: 100%;
+        width: 80mm; padding: 5mm; margin: 0 auto;
+        font-size: 10px; background: white; border-radius: 0;
     }
-    
-    .receipt-paper .receipt-row {
-        font-size: 10px;
-    }
-    
-    .receipt-paper .receipt-row.total {
-        font-size: 13px;
-    }
-    
-    .receipt-paper .receipt-header h3 {
-        font-size: 14px;
-    }
+    .receipt-paper .receipt-row { font-size: 10px; }
+    .receipt-paper .receipt-row.total { font-size: 13px; }
+    .receipt-paper .receipt-header h3 { font-size: 14px; }
 }
 
 /* ==================== Toast ==================== */
@@ -465,9 +387,7 @@ label { display: block; font-size: 13px; font-weight: 600; color: var(--gray-700
 }
 
 /* ==================== خالی ==================== */
-.empty-state {
-    text-align: center; padding: 40px; color: var(--gray-500);
-}
+.empty-state { text-align: center; padding: 40px; color: var(--gray-500); }
 .empty-state i { font-size: 40px; display: block; margin-bottom: 12px; }
 
 /* ==================== ریسپانسیو ==================== */
