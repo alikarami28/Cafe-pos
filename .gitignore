@@ -1,4 +1,33 @@
+# فایل‌های سیستم عامل
 .DS_Store
-node_modules
+Thumbs.db
+desktop.ini
+
+# فایل‌های ویرایشگر
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# فایل‌های لاگ
 *.log
+npm-debug.log*
+
+# فایل‌های محیطی
 .env
+.env.local
+.env.production
+
+# پوشه‌های سیستمی
+node_modules/
+vendor/
+
+# فایل‌های فشرده
+*.zip
+*.rar
+*.tar.gz
+
+# فایل‌های بکاپ
+*.bak
+*.backup
