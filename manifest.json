@@ -1,45 +1,47 @@
 {
     "name": "کافه من - صندوق فروشگاهی",
     "short_name": "کافه من",
-    "description": "نرم‌افزار مدیریت کافه و رستوران",
+    "description": "نرم‌افزار مدیریت کافه و رستوران - فروش، محصولات، گزارشات",
     "start_url": "/",
     "display": "standalone",
+    "display_override": ["standalone", "fullscreen"],
     "background_color": "#3c2415",
     "theme_color": "#3c2415",
     "orientation": "portrait",
     "lang": "fa",
     "dir": "rtl",
     "scope": "/",
+    "id": "/",
     "icons": [
         {
             "src": "images/logo.png",
+            "sizes": "48x48",
+            "type": "image/png"
+        },
+        {
+            "src": "images/logo.png",
             "sizes": "72x72",
-            "type": "image/png",
-            "purpose": "any"
+            "type": "image/png"
         },
         {
             "src": "images/logo.png",
             "sizes": "96x96",
-            "type": "image/png",
-            "purpose": "any"
+            "type": "image/png"
         },
         {
             "src": "images/logo.png",
             "sizes": "128x128",
-            "type": "image/png",
-            "purpose": "any"
+            "type": "image/png"
         },
         {
             "src": "images/logo.png",
             "sizes": "144x144",
-            "type": "image/png",
-            "purpose": "any"
+            "type": "image/png"
         },
         {
             "src": "images/logo.png",
             "sizes": "152x152",
-            "type": "image/png",
-            "purpose": "any"
+            "type": "image/png"
         },
         {
             "src": "images/logo.png",
@@ -60,19 +62,42 @@
             "purpose": "any maskable"
         }
     ],
+    "screenshots": [
+        {
+            "src": "images/logo.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "form_factor": "narrow",
+            "label": "صفحه اصلی"
+        }
+    ],
     "categories": ["business", "productivity", "food"],
     "prefer_related_applications": false,
-    "screenshots": [],
+    "related_applications": [],
     "shortcuts": [
         {
-            "name": "فروش",
+            "name": "ثبت فروش",
+            "short_name": "فروش",
+            "description": "صفحه ثبت فروش",
             "url": "/",
-            "description": "صفحه فروش"
+            "icons": [
+                {
+                    "src": "images/logo.png",
+                    "sizes": "96x96"
+                }
+            ]
         },
         {
-            "name": "محصولات",
+            "name": "مدیریت محصولات",
+            "short_name": "محصولات",
+            "description": "مدیریت محصولات",
             "url": "/",
-            "description": "مدیریت محصولات"
+            "icons": [
+                {
+                    "src": "images/logo.png",
+                    "sizes": "96x96"
+                }
+            ]
         }
     ]
 }
