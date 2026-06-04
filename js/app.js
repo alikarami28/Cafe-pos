@@ -71,18 +71,18 @@ function loadAllData() {
     
     if (products.length === 0) {
         products = [
-            { id: 1, name: 'اسپرسو', category: 'نوشیدنی گرم', price: 45000, available: true },
-            { id: 2, name: 'لاته', category: 'نوشیدنی گرم', price: 65000, available: true },
-            { id: 3, name: 'کاپوچینو', category: 'نوشیدنی گرم', price: 60000, available: true },
-            { id: 4, name: 'موکا', category: 'نوشیدنی گرم', price: 70000, available: true },
-            { id: 5, name: 'آیس لاته', category: 'نوشیدنی سرد', price: 70000, available: true },
-            { id: 6, name: 'اسموتی', category: 'نوشیدنی سرد', price: 65000, available: true },
-            { id: 7, name: 'چای سیاه', category: 'چای و دمنوش', price: 30000, available: true },
-            { id: 8, name: 'چای سبز', category: 'چای و دمنوش', price: 35000, available: true },
-            { id: 9, name: 'دمنوش بابونه', category: 'چای و دمنوش', price: 40000, available: true },
-            { id: 10, name: 'چیزکیک', category: 'کیک و دسر', price: 55000, available: true },
-            { id: 11, name: 'کیک شکلاتی', category: 'کیک و دسر', price: 45000, available: true },
-            { id: 12, name: 'براونی', category: 'کیک و دسر', price: 40000, available: true }
+            { id: 1, name: 'اسپرسو', category: 'نوشیدنی گرم', price: 45000, available: true, order: 1 },
+            { id: 2, name: 'لاته', category: 'نوشیدنی گرم', price: 65000, available: true, order: 2 },
+            { id: 3, name: 'کاپوچینو', category: 'نوشیدنی گرم', price: 60000, available: true, order: 3 },
+            { id: 4, name: 'موکا', category: 'نوشیدنی گرم', price: 70000, available: true, order: 4 },
+            { id: 5, name: 'آیس لاته', category: 'نوشیدنی سرد', price: 70000, available: true, order: 5 },
+            { id: 6, name: 'اسموتی', category: 'نوشیدنی سرد', price: 65000, available: true, order: 6 },
+            { id: 7, name: 'چای سیاه', category: 'چای و دمنوش', price: 30000, available: true, order: 7 },
+            { id: 8, name: 'چای سبز', category: 'چای و دمنوش', price: 35000, available: true, order: 8 },
+            { id: 9, name: 'دمنوش بابونه', category: 'چای و دمنوش', price: 40000, available: true, order: 9 },
+            { id: 10, name: 'چیزکیک', category: 'کیک و دسر', price: 55000, available: true, order: 10 },
+            { id: 11, name: 'کیک شکلاتی', category: 'کیک و دسر', price: 45000, available: true, order: 11 },
+            { id: 12, name: 'براونی', category: 'کیک و دسر', price: 40000, available: true, order: 12 }
         ];
         saveProducts();
     }
@@ -128,6 +128,9 @@ function renderProductsList(category = 'all') {
     if (!container) return;
     
     let filtered = category === 'all' ? products : products.filter(p => p.category === category);
+    
+    // مرتب‌سازی بر اساس فیلد order
+    filtered.sort((a, b) => (a.order || 999) - (b.order || 999));
     
     if (filtered.length === 0) {
         container.innerHTML = '<div class="empty-state"><i class="fas fa-box-open"></i><p>محصولی یافت نشد</p></div>';
@@ -185,10 +188,13 @@ function renderProductList() {
         return;
     }
     
-    container.innerHTML = products.map(p => `
+    // مرتب‌سازی بر اساس order
+    const sortedProducts = [...products].sort((a, b) => (a.order || 999) - (b.order || 999));
+    
+    container.innerHTML = sortedProducts.map(p => `
         <div class="product-item">
             <div class="info">
-                <span class="name">${p.name}</span>
+                <span class="name">🔢 ${p.order || '-'} | ${p.name}</span>
                 <span class="meta">${p.category} | ${Number(p.price).toLocaleString('fa-IR')} تومان</span>
                 <span class="status ${p.available ? 'available' : 'unavailable'}">${p.available ? 'موجود' : 'ناموجود'}</span>
             </div>
@@ -212,12 +218,14 @@ function showProductForm(id = null) {
             document.getElementById('productCategory').value = p.category;
             document.getElementById('productPrice').value = p.price;
             document.getElementById('productAvailable').value = p.available ? 'true' : 'false';
+            document.getElementById('productOrder').value = p.order || products.length + 1;
         }
     } else {
         document.getElementById('productName').value = '';
         document.getElementById('productCategory').value = 'نوشیدنی گرم';
         document.getElementById('productPrice').value = '';
         document.getElementById('productAvailable').value = 'true';
+        document.getElementById('productOrder').value = products.length + 1;
     }
     
     form.classList.add('show');
@@ -233,15 +241,16 @@ function saveProduct() {
     const category = document.getElementById('productCategory').value;
     const price = parseInt(document.getElementById('productPrice').value);
     const available = document.getElementById('productAvailable').value === 'true';
+    const order = parseInt(document.getElementById('productOrder').value) || products.length + 1;
     
     if (!name) { showToast('نام محصول الزامی است', 'error'); return; }
     if (!price || price <= 0) { showToast('قیمت معتبر وارد کنید', 'error'); return; }
     
     if (id) {
         const index = products.findIndex(p => p.id === parseInt(id));
-        if (index !== -1) products[index] = { ...products[index], name, category, price, available };
+        if (index !== -1) products[index] = { ...products[index], name, category, price, available, order };
     } else {
-        products.push({ id: getNextId(products), name, category, price, available });
+        products.push({ id: getNextId(products), name, category, price, available, order });
     }
     
     saveProducts();
@@ -429,7 +438,6 @@ function showReceipt(order) {
     const shopPhone = settings.shopPhone || '';
     const date = new Date(order.datetime);
     
-    // انتخاب جمله انگیزشی رندوم
     const randomQuote = cafeQuotes[Math.floor(Math.random() * cafeQuotes.length)];
     
     document.getElementById('receiptContent').innerHTML = `
