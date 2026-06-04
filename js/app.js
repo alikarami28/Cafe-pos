@@ -6,6 +6,40 @@ let currentCart = [];
 let currentDiscount = 0;
 let currentOrderData = null;
 
+// ==================== جملات انگیزشی کافه ====================
+const cafeQuotes = [
+    "☕ زندگی مثل قهوه است؛ تلخ و شیرینش به دم‌کردن تو بستگی دارد.",
+    "✨ هر فنجان قهوه، شروعی دوباره برای یک روز تازه است.",
+    "🌅 صبح‌ها با قهوه آغاز می‌شوند، رویاها با امید.",
+    "💫 قهوه‌ات را بنوش، نفسی عمیق بکش و جهان را تغییر بده.",
+    "🍃 در گرماگرم زندگی، یک فنجان قهوه بهترین بهانه برای مکث است.",
+    "🌟 امروز را با طعم قهوه و عطر امید آغاز کن.",
+    "🫘 دانه‌های قهوه له می‌شوند تا عطرشان آزاد شود؛ تو هم از سختی‌ها قوی‌تر می‌شوی.",
+    "☀️ پشت هر ابری، خورشیدی منتظر طلوع است؛ مثل عطر قهوه در صبحگاهی دل‌انگیز.",
+    "💭 گاهی بهترین تصمیم‌ها، پشت یک فنجان قهوه گرفته می‌شوند.",
+    "🌺 زندگی کوتاه‌تر از آن است که قهوه‌ات را سرد بنوشی.",
+    "🕊️ آرامش یعنی: یک کتاب خوب، یک فنجان قهوه گرم، و سکوت.",
+    "🔥 از تلخی قهوه نترس؛ شیرینی زندگی در همان تلخی‌ها پنهان است.",
+    "🎯 امروز را زندگی کن؛ دیروز تمام شد، فردا هنوز نیامده است.",
+    "🌈 بعد از هر طوفانی، رنگین‌کمانی هست؛ صبور باش.",
+    "🍯 مثل عسل در قهوه، شیرینی را به تلخی‌های زندگی اضافه کن.",
+    "⛅ هر روز فرصتی تازه است؛ قهوه‌ات را بردار و شروع کن.",
+    "💪 تو قوی‌تر از آنی که فکر می‌کنی؛ ادامه بده.",
+    "🌻 در تاریک‌ترین شب‌ها هم ستاره‌ها می‌درخشند؛ امیدت را حفظ کن.",
+    "🎵 زندگی آهنگی است که تو آهنگسازش هستی؛ قشنگ بنواز.",
+    "☕ یک فنجان قهوه، یک دنیا آرامش.",
+    "🏔️ قله‌های بلند با قدم‌های کوچک فتح می‌شوند؛ استوار باش.",
+    "🍀 شانس به سراغ کسانی می‌آید که تلاش می‌کنند.",
+    "💖 امروز را با عشق زندگی کن؛ فردا دیر است.",
+    "🦋 تغییر، زیباست؛ مثل پروانه شدن.",
+    "🌊 زندگی مثل موج است؛ گاهی بالا، گاهی پایین؛ مهم ادامه دادن است.",
+    "☕ قهوه تلخ را تحمل کن تا طعم شیرین زندگی را بچشی.",
+    "🌟 تو نوری در این جهان هستی؛ بدرخش.",
+    "🌿 ساده زندگی کن، عمیق نفس بکش، آرام لبخند بزن.",
+    "🕰️ وقت‌های خوش را دریاب؛ مثل یک فنجان قهوه داغ در روز سرد.",
+    "💫 هر پایان، آغازی تازه است؛ مثل فنجان خالی که دوباره پر می‌شود."
+];
+
 // ==================== راه‌اندازی ====================
 document.addEventListener('DOMContentLoaded', function() {
     loadAllData();
@@ -21,7 +55,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (e.target === this) hideProductForm();
     });
     
-    // کلیک روی گزینه‌های پرداخت
     document.querySelectorAll('.payment-option').forEach(opt => {
         opt.addEventListener('click', function() {
             document.querySelectorAll('.payment-option').forEach(o => o.classList.remove('active'));
@@ -351,7 +384,6 @@ function processPayment() {
     orders.push(order);
     saveOrders();
     
-    // نمایش پیش‌نمایش فاکتور
     showReceipt(order);
     
     currentCart = [];
@@ -397,27 +429,39 @@ function showReceipt(order) {
     const shopPhone = settings.shopPhone || '';
     const date = new Date(order.datetime);
     
+    // انتخاب جمله انگیزشی رندوم
+    const randomQuote = cafeQuotes[Math.floor(Math.random() * cafeQuotes.length)];
+    
     document.getElementById('receiptContent').innerHTML = `
         <div class="receipt-header">
             <h3>${shopName}</h3>
-            <small>${shopPhone}</small>
+            ${shopPhone ? `<small>${shopPhone}</small>` : ''}
+            <small>${date.toLocaleDateString('fa-IR')} - ${date.toLocaleTimeString('fa-IR')}</small>
         </div>
-        <div class="receipt-divider"></div>
-        <div class="receipt-row"><span>شماره:</span><span>#${order.id}</span></div>
-        <div class="receipt-row"><span>تاریخ:</span><span>${date.toLocaleDateString('fa-IR')}</span></div>
-        <div class="receipt-row"><span>ساعت:</span><span>${date.toLocaleTimeString('fa-IR')}</span></div>
-        <div class="receipt-divider"></div>
+        <div class="receipt-divider">━━━━━━━━━━━━━━━━</div>
         <div class="receipt-row title"><span>شرح</span><span>قیمت</span></div>
         ${order.items.map(item => `
-            <div class="receipt-row"><span>${item.name} × ${item.quantity}</span><span>${Number(item.totalPrice).toLocaleString('fa-IR')}</span></div>
+            <div class="receipt-row">
+                <span>${item.name}</span>
+                <span>${Number(item.unitPrice).toLocaleString('fa-IR')}</span>
+            </div>
+            <div class="receipt-row" style="font-size:11px;color:#666;">
+                <span>  × ${item.quantity} عدد</span>
+                <span>${Number(item.totalPrice).toLocaleString('fa-IR')}</span>
+            </div>
         `).join('')}
-        <div class="receipt-divider"></div>
-        ${order.discount > 0 ? `<div class="receipt-row"><span>تخفیف</span><span>${Number(order.discount).toLocaleString('fa-IR')}</span></div>` : ''}
-        <div class="receipt-row total"><span>مبلغ نهایی</span><span>${Number(order.total).toLocaleString('fa-IR')} تومان</span></div>
-        <div class="receipt-divider"></div>
-        <div style="text-align:center;"><span>پرداخت: ${order.paymentMethod === 'cash' ? 'نقدی' : 'کارت خوان'}</span></div>
+        <div class="receipt-divider">━━━━━━━━━━━━━━━━</div>
+        <div class="receipt-row"><span>تعداد اقلام:</span><span>${order.items.reduce((s,i) => s + i.quantity, 0)} عدد</span></div>
+        <div class="receipt-row"><span>جمع کل:</span><span>${Number(order.subtotal).toLocaleString('fa-IR')} تومان</span></div>
+        ${order.discount > 0 ? `<div class="receipt-row" style="color:#c62828;"><span>تخفیف:</span><span>-${Number(order.discount).toLocaleString('fa-IR')} تومان</span></div>` : ''}
+        <div class="receipt-row total"><span>مبلغ نهایی:</span><span>${Number(order.total).toLocaleString('fa-IR')} تومان</span></div>
+        <div class="receipt-divider">━━━━━━━━━━━━━━━━</div>
+        <div style="text-align:center;margin:4px 0;"><span>روش پرداخت: ${order.paymentMethod === 'cash' ? 'نقدی' : 'کارت خوان'}</span></div>
+        <div class="receipt-divider">━━━━━━━━━━━━━━━━</div>
         <div class="receipt-footer">
-            <p>با تشکر از خرید شما</p>
+            <p style="margin:8px 0;line-height:1.8;font-style:italic;">${randomQuote}</p>
+            <p>با آرزوی روزی خوش برای شما</p>
+            <p style="margin-top:8px;font-size:10px;">${shopName} - سپاسگزاریم</p>
         </div>
     `;
     
