@@ -1,0 +1,9 @@
+{
+    "name": "کافه من",
+    "short_name": "کافه",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#3c2415",
+    "theme_color": "#3c2415",
+    "icons": [{ "src": "/images/logo.png", "sizes": "512x512", "type": "image/png" }]
+}

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#3c2415">
+    
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/logo.png">
+    
+    <title>کافه من | صندوق فروشگاهی</title>
+    
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+</head>
+<body>
+    
+    <!-- هدر -->
+    <header class="main-header">
+        <div class="header-left">
+            <img src="images/logo.png" alt="لوگو" class="header-logo" onerror="this.style.display='none'">
+            <div>
+                <h1>کافه من</h1>
+                <span class="header-subtitle">صندوق فروشگاهی</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <span class="date-time" id="dateTime"></span>
+            <button class="cart-button" onclick="navigateTo('cart')">
+                <i class="fas fa-shopping-basket"></i>
+                <span class="cart-badge" id="cartCount">0</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- ناوبری -->
+    <nav class="bottom-nav">
+        <button class="nav-btn active" onclick="navigateTo('pos')">
+            <i class="fas fa-mug-hot"></i><span>فروش</span>
+        </button>
+        <button class="nav-btn" onclick="navigateTo('products')">
+            <i class="fas fa-boxes"></i><span>محصولات</span>
+        </button>
+        <button class="nav-btn" onclick="navigateTo('reports')">
+            <i class="fas fa-chart-bar"></i><span>گزارشات</span>
+        </button>
+        <button class="nav-btn" onclick="navigateTo('settings')">
+            <i class="fas fa-cog"></i><span>تنظیمات</span>
+        </button>
+    </nav>
+
+    <main id="mainContent">
+        
+        <!-- صفحه فروش -->
+        <section id="page-pos" class="page active">
+            <div class="search-bar">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" id="searchProduct" placeholder="جستجوی محصول..." oninput="searchProducts()">
+            </div>
+            <div class="category-filter" id="categoryFilter"></div>
+            <div class="products-grid" id="productsGrid"></div>
+        </section>
+
+        <!-- صفحه سبد خرید -->
+        <section id="page-cart" class="page">
+            <h2 class="page-title">سبد خرید</h2>
+            <div class="cart-items" id="cartItems"></div>
+            <div class="cart-summary" id="cartSummary"></div>
+            <div class="cart-actions">
+                <button class="btn btn-outline" onclick="clearCart()">خالی کردن</button>
+                <button class="btn btn-primary" onclick="openCheckout()">ادامه ثبت سفارش</button>
+            </div>
+        </section>
+
+        <!-- صفحه تسویه -->
+        <section id="page-checkout" class="page">
+            <h2 class="page-title">نهایی کردن سفارش</h2>
+            <div class="checkout-details" id="checkoutDetails"></div>
+            
+            <div class="section-card">
+                <h3>روش پرداخت</h3>
+                <div class="payment-options">
+                    <label class="payment-option active">
+                        <input type="radio" name="payment" value="cash" checked> نقدی
+                    </label>
+                    <label class="payment-option">
+                        <input type="radio" name="payment" value="card"> کارت خوان
+                    </label>
+                </div>
+            </div>
+            
+            <div class="section-card">
+                <h3>تخفیف</h3>
+                <div class="discount-row">
+                    <input type="number" id="discountAmount" value="0" onchange="updateCheckout()" placeholder="مبلغ تخفیف">
+                    <span>تومان</span>
+                </div>
+            </div>
+            
+            <button class="btn btn-success btn-block" onclick="processPayment()">
+                پرداخت نهایی - <span id="finalAmount">۰ تومان</span>
+            </button>
+        </section>
+
+        <!-- صفحه مدیریت محصولات -->
+        <section id="page-products" class="page">
+            <div class="page-header-actions">
+                <h2 class="page-title">مدیریت محصولات</h2>
+                <button class="btn btn-primary" onclick="showProductForm()">+ محصول جدید</button>
+            </div>
+            <div class="products-list" id="productsList"></div>
+            
+            <!-- مودال محصول -->
+            <div id="productForm" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 id="formTitle">محصول جدید</h3>
+                        <button class="btn-close" onclick="hideProductForm()">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" id="productId">
+                        <label>نام محصول</label>
+                        <input type="text" id="productName" required>
+                        <label>دسته‌بندی</label>
+                        <select id="productCategory">
+                            <option value="نوشیدنی گرم">نوشیدنی گرم</option>
+                            <option value="نوشیدنی سرد">نوشیدنی سرد</option>
+                            <option value="چای و دمنوش">چای و دمنوش</option>
+                            <option value="کیک و دسر">کیک و دسر</option>
+                        </select>
+                        <label>قیمت (تومان)</label>
+                        <input type="number" id="productPrice" required>
+                        <label>وضعیت</label>
+                        <select id="productAvailable">
+                            <option value="true">موجود</option>
+                            <option value="false">ناموجود</option>
+                        </select>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" onclick="hideProductForm()">انصراف</button>
+                        <button class="btn btn-primary" onclick="saveProduct()">ذخیره</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- صفحه گزارشات -->
+        <section id="page-reports" class="page">
+            <h2 class="page-title">گزارشات فروش</h2>
+            <div class="report-filters">
+                <button class="filter-btn active" onclick="changeReportPeriod('daily')">امروز</button>
+                <button class="filter-btn" onclick="changeReportPeriod('weekly')">این هفته</button>
+                <button class="filter-btn" onclick="changeReportPeriod('monthly')">این ماه</button>
+            </div>
+            <input type="hidden" id="reportPeriod" value="daily">
+            <div class="report-summary" id="reportSummary"></div>
+            <div class="report-details" id="reportDetails"></div>
+            <button class="btn btn-primary" onclick="exportCSV()">خروجی CSV</button>
+        </section>
+
+        <!-- صفحه تنظیمات -->
+        <section id="page-settings" class="page">
+            <h2 class="page-title">تنظیمات</h2>
+            
+            <div class="section-card">
+                <h3>اطلاعات کافه</h3>
+                <label>نام کافه</label>
+                <input type="text" id="shopName" value="کافه من">
+                <label>شعار</label>
+                <input type="text" id="shopSlogan">
+                <label>شماره تماس</label>
+                <input type="tel" id="shopPhone">
+                <button class="btn btn-primary btn-block" onclick="saveSettingsData()">ذخیره تنظیمات</button>
+            </div>
+            
+            <div class="section-card">
+                <h3>پرینتر</h3>
+                <div id="printerStatus">وضعیت: قطع</div>
+                <button class="btn btn-primary btn-block" onclick="connectPrinter()">اتصال به پرینتر</button>
+            </div>
+            
+            <div class="section-card">
+                <h3>پشتیبان‌گیری</h3>
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="backupData()">خروجی فایل</button>
+                    <button class="btn btn-secondary" onclick="restoreData()">بازگردانی</button>
+                </div>
+                <input type="file" id="uploadDB" accept=".json" style="display:none" onchange="uploadDBFile(this.files[0])">
+            </div>
+        </section>
+        
+        <!-- پیش‌نمایش فاکتور -->
+        <section id="page-receipt" class="page">
+            <div class="receipt-actions no-print">
+                <button class="btn btn-secondary" onclick="closeReceipt()">بازگشت</button>
+                <button class="btn btn-primary" onclick="printReceipt()">چاپ فاکتور</button>
+            </div>
+            <div class="receipt-paper" id="receiptContent"></div>
+        </section>
+        
+    </main>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
